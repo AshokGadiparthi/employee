@@ -1,0 +1,18 @@
+CREATE DATABASE UsersDb
+go
+ 
+use UsersDb
+go
+ 
+create table users (id INT, name NVARCHAR(100))
+go
+ 
+insert into users values (1,'Ashok');
+insert into users values (2,'Sai');
+insert into users values (3,'Ram');
+go
+ 
+select * from users
+go
+
+select count(1) from users;
