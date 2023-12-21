@@ -1,18 +1,37 @@
-CREATE DATABASE UsersDb
-go
- 
-use UsersDb
-go
- 
-create table users (id INT, name NVARCHAR(100))
-go
- 
-insert into users values (1,'Ashok');
-insert into users values (2,'Sai');
-insert into users values (3,'Ram');
-go
- 
-select * from users
-go
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
-select count(1) from users;
+public class SimpleDateFormatConversion {
+    public static void main(String[] args) {
+        // Input date-time string in the "dd-MM-yyyy HH:mm:ss:SSSSSSSSS GMT" format
+        String inputDateTimeString = "21-12-2023 15:30:45:123456789 GMT";
+
+        // Define the formatter for the input format
+        SimpleDateFormat inputFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss:SSSSSSSSS z");
+        inputFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try {
+            // Parse the input string to Date
+            Date date = inputFormatter.parse(inputDateTimeString);
+
+            long truncatedTime = date.getTime() / 1000 * 1000;
+
+            // Create a new Date object with truncated milliseconds
+            Date truncatedDate = new Date(truncatedTime);
+
+            SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            outputFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+            // Format the truncated Date to the desired output format
+            String outputDateString = outputFormatter.format(truncatedDate);
+
+            // Print the result
+            System.out.println("Input Date-Time: " + inputDateTimeString);
+            System.out.println("Output Date: " + outputDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+}
