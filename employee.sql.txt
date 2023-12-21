@@ -1,36 +1,35 @@
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.TimeZone;
 
-public class SimpleDateFormatConversion {
+public class DateTimeConversion {
     public static void main(String[] args) {
         // Input date-time string in the "dd-MM-yyyy HH:mm:ss:SSSSSSSSS GMT" format
-        String inputDateTimeString = "21-12-2023 15:30:45:123456789 GMT";
+        String inputDateTimeString = "31-12-2022 15:30:45:123456789 GMT";
 
         // Define the formatter for the input format
-        SimpleDateFormat inputFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss:SSSSSSSSS z");
-        inputFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:SSSSSSSSS z");
 
         try {
-            // Parse the input string to Date
-            Date date = inputFormatter.parse(inputDateTimeString);
+            // Parse the input string to Instant
+            Instant instant = Instant.from(inputFormatter.parse(inputDateTimeString));
 
-            long truncatedTime = date.getTime() / 1000 * 1000;
+            // Convert Instant to LocalDate
+            LocalDate localDate = LocalDate.from(instant.atZone(ZoneId.of("GMT")));
 
-            // Create a new Date object with truncated milliseconds
-            Date truncatedDate = new Date(truncatedTime);
+            // Define the formatter for the output format
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-            outputFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-            // Format the truncated Date to the desired output format
-            String outputDateString = outputFormatter.format(truncatedDate);
+            // Format LocalDate to the desired output format
+            String outputDateString = localDate.format(outputFormatter);
 
             // Print the result
             System.out.println("Input Date-Time: " + inputDateTimeString);
             System.out.println("Output Date: " + outputDateString);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
