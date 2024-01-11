@@ -1,36 +1,66 @@
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+Certainly! Here's a summary for the four pipelines you've recently developed for real-time streaming data using Google Cloud Dataflow:
 
-public class DateTimeConversion {
-    public static void main(String[] args) {
-        // Input date-time string in the "dd-MM-yyyy HH:mm:ss:SSSSSSSSS GMT" format
-        String inputDateTimeString = "31-12-2022 15:30:45:123456789 GMT";
+1. Name Pipeline:
 
-        // Define the formatter for the input format
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:SSSSSSSSS z");
+Objective: Extract specific values from Avro messages related to customer names.
+Transformations:
+Extract relevant information from Avro messages.
+Split account numbers into customer IDs and account numbers.
+Extract source timestamps and create insertion timestamps.
+Destination: Store processed data in BigQuery tables.
+Monitoring and Logging:
+Implemented dead letter queue to capture failed BigQuery insertions.
+Added logging for enhanced visibility.
+Counters to track the number of processed records.
+2. Address Pipeline:
 
-        try {
-            // Parse the input string to Instant
-            Instant instant = Instant.from(inputFormatter.parse(inputDateTimeString));
+Objective: Extract and transform Avro messages related to customer addresses.
+Transformations:
+Extract necessary data from Avro messages.
+Split account numbers into customer IDs and account numbers.
+Extract source timestamps and create insertion timestamps.
+Destination: Store processed data in BigQuery tables.
+Monitoring and Logging:
+Dead letter queue for capturing failed BigQuery insertions.
+Comprehensive logging and record counters.
+3. Email Pipeline:
 
-            // Convert Instant to LocalDate
-            LocalDate localDate = LocalDate.from(instant.atZone(ZoneId.of("GMT")));
+Objective: Process Avro messages containing customer email information.
+Transformations:
+Extract relevant data from Avro messages.
+Split account numbers into customer IDs and account numbers.
+Extract source timestamps and create insertion timestamps.
+Destination: Store processed data in BigQuery tables.
+Monitoring and Logging:
+Dead letter queue for handling failed BigQuery inserts.
+Detailed logging and record counters.
+4. Plan Change Pipeline:
 
-            // Define the formatter for the output format
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+Objective: Handle Avro messages related to changes in customer plans.
+Transformations:
+Extract necessary information from Avro messages.
+Split account numbers into customer IDs and account numbers.
+Extract source timestamps and generate insertion timestamps.
+Destination: Store processed data in designated BigQuery tables.
+Monitoring and Logging:
+Dead letter queue to capture any issues during BigQuery insertions.
+Logging and record counters for monitoring and reporting.
+Common Features Across Pipelines:
 
-            // Format LocalDate to the desired output format
-            String outputDateString = localDate.format(outputFormatter);
+Reflection Patterns:
+Utilized reflection patterns for code reuse, enhancing maintainability.
+Configuration Management:
+Configured pipelines using YAML files for flexibility and easy adjustments.
+CI/CD Integration:
+Integrated with CI/CD for dynamic template generation, streamlining deployment processes.
+Business Advantages:
 
-            // Print the result
-            System.out.println("Input Date-Time: " + inputDateTimeString);
-            System.out.println("Output Date: " + outputDateString);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
+Real-time Analytics:
+Marketing team receives data in near real-time, enabling quick decision-making.
+Enhanced Data Quality:
+Dead letter queues and logging ensure the capture and analysis of failed records, improving overall data quality.
+Operational Efficiency:
+Reflection patterns and configuration management contribute to efficient development and maintenance.
+Continuous Improvement:
+CI/CD integration supports a streamlined deployment process, allowing for continuous improvement and updates.
+This comprehensive data processing solution empowers the marketing team with timely and accurate insights for better decision-making. If you have any specific points you'd like to highlight or add, feel free to customize the summary accordingly.
